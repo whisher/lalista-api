@@ -1,0 +1,27 @@
+# --------------------
+# Node Files
+# --------------------
+node_modules/
+npm-debug.log
+
+# --------------------
+# SASS Files
+# --------------------
+.sass-cache/
+
+# --------------------
+# Bower Files
+# --------------------
+.bower-*/
+bower_components
+
+# --------------------
+# App Files
+# --------------------
+build/
+tmp/
+public/tests/unit-result/
+log/
+
+
+

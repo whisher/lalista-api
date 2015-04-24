@@ -1,0 +1,32 @@
+<div class="container">
+  <div class="row" data-ng-if="!items.data.length">
+      <div class="well">
+          <h5>There in no items yet</h5>
+      </div>
+  </div>
+  <div class="row" data-ng-if="global.isAdmin()">
+      <div class="well add-new-box clearfix">
+          <a data-ui-sref="item create" class="btn btn-primary pull-right">New</a>
+      </div>
+  </div>
+  <ul class="item-list" data-ng-if="items.data.length > 0">
+    <li class="item" data-ng-repeat="item in items.data track by item._id">
+      <span class="item-thumb">
+        <i class="fa fa-calendar"> {{::item.created | date:'longDate'}}</i>
+      </span>
+      <div class="item-body">
+        <h3><a data-ui-sref="item show({ id: item._id })">{{::item.title}}</a></h3>
+        <div class="item-content">{{::item.content | truncate:50}}</div>
+        <div class="item-price">{{::item.price | currency}}</div>
+        <div class="item-bottom" data-ng-if="global.isAdmin()">
+          <a class="btn btn-warning btn-sm" data-ui-sref="item update({ id: item._id })">
+            <i class="fa fa-pencil"></i> Update
+          </a>
+          <a  class="btn btn-danger btn-sm" modal-item-destroy item="item">
+            <i class="fa fa-trash"></i> Delete
+          </a>
+        </div>  
+      </div>
+    </li>
+  </ul>
+</div>
