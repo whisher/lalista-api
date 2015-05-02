@@ -1,10 +1,11 @@
 body {
+  padding-top: 70px;
   color: #222;
 }
 .logo{
   @extend .fa; 
-  @extend .fa-bolt; 
-  color: #FF5722;
+  @extend .fa-cutlery; 
+  color: #727272;
 }
 .welcome {
   @extend .jumbotron; 
@@ -17,7 +18,7 @@ body {
   display: block !important;
   text-align: center;
   bottom: 0;
-  background-color: $primaryTextColor;
+  background-color: $darkPrimaryColor;
   left: 0;
   position: fixed;
   right: 0;
@@ -38,7 +39,9 @@ body {
     top: 50%;
   }
 }
-
+.tab-cart{
+  margin-right:5px;
+}
 .page-error-status{
   @extend .text-danger;
 }

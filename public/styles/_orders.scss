@@ -1,0 +1,21 @@
+.navbar-nav {
+    > li.tab-cart > a {
+      color: #8BC34A;
+      &:hover,
+      &:focus {
+        color: $navbar-default-link-hover-color;
+        background-color: $navbar-default-link-hover-bg;
+      }
+      i{
+        font-size: 22px;
+      }
+    }
+    > .active > a {
+      &,
+      &:hover,
+      &:focus {
+        color: $navbar-default-link-active-color;
+        background-color: $navbar-default-link-active-bg;
+      }
+    }
+}

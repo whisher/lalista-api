@@ -5,13 +5,13 @@ function UserController() {
 	var user = this;
 }
 
-function UserSigninController($rootScope, $state, Users) {
+function UserSigninController($rootScope, $state, Users, AUTH_EVENTS) {
 	var user = this;
 	user.data = {};
 	user.error  = undefined;
     	user.save = function() {
     		Users.signin(user.data).then(function(response) {
-			$rootScope.$emit('auth-is-authenticated', response.data.token);
+			$rootScope.$emit(AUTH_EVENTS.authenticated, response.data.token);
 			$state.go('home');
 		})
 		.catch(function(response) {
@@ -20,13 +20,13 @@ function UserSigninController($rootScope, $state, Users) {
 	};
 }
 
-function UserRegisterController($rootScope, $state, Users) {
+function UserRegisterController($rootScope, $state, Users, AUTH_EVENTS) {
 	var user = this;
 	user.data = {};
 	user.error  = undefined;
 	user.save = function() {
 		Users.register(user.data).then(function(response) {
-			$rootScope.$emit('auth-is-authenticated', response.data.token);
+			$rootScope.$emit(AUTH_EVENTS.authenticated, response.data.token);
 			$state.go('home');
 		})
 		.catch(function(response) {

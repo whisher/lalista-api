@@ -4,7 +4,8 @@ var path = require('path'),
 
 module.exports = {
 	root:root,
-	staticPath:'build',
+	staticPath:root + '/build',
+	uploadsPath:root + '/uploads',
 	app: {
 		name: 'lalista'
 	},

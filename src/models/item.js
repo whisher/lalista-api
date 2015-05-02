@@ -29,7 +29,7 @@ var ItemSchema = new Schema({
     required: true,
     trim: true
   },
-  url: {
+  thumb: {
     type: String,
     required: true,
     trim: true
@@ -39,10 +39,8 @@ var ItemSchema = new Schema({
     enum: ['available', 'soldout'],
     default: 'available'
   }, 
-  tag: {
-    type: String,
-    required: true,
-    trim: true
+  tags: {
+    type: [String]
   }
 });
 

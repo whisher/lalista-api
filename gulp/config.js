@@ -22,13 +22,19 @@ var config = {
                 SRC_FOLDER + '/modules/**/*.js'
             ],
             vendor:[
+                'bower_components/jquery/dist/jquery'+jsExt,
+                'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap'+jsExt,
+                'bower_components/lodash/lodash'+jsExt,
                 'bower_components/angular/angular'+jsExt,
+                'bower_components/angular-i18n/angular-locale_it-it.js',
                 'bower_components/angular-ui-router/release/angular-ui-router'+jsExt,
                 'bower_components/angular-bootstrap/ui-bootstrap-tpls'+jsExt,
                 'bower_components/angular-animate/angular-animate'+jsExt,
                 'bower_components/ngstorage/ngStorage'+jsExt,
                 'bower_components/angular-jwt/dist/angular-jwt'+jsExt,
                 'bower_components/angular-socket-io/socket'+jsExt,
+                'bower_components/angular-upload/angular-upload'+jsExt,
+                'bower_components/angular-counter/counter'+jsExt
             ],
             fonts: [
                 'bower_components/bootstrap-sass-official/assets/fonts/bootstrap/**',

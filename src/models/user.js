@@ -36,9 +36,7 @@ var UserSchema = new Schema({
     default: 'local'
   },
   scope: {
-      type: String,
-      enum: ['user','admin'],
-      default: 'user'
+     type: [String]
   }  
 });
 
@@ -66,7 +64,7 @@ UserSchema.methods.authenticate = function(password) {
   return bcrypt.compareSync(password, this.password);
 };
 UserSchema.statics.isUser = function(payload, cb) {
-  this.findOne({ $or:[ {'username':payload.username}, {'email':payload.username} ]}).exec(cb);
+  this.findOne({ $or:[ {'username':payload.credential}, {'email':payload.credential} ]}).exec(cb);
 };
 
 /**

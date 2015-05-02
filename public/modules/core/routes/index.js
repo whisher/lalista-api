@@ -6,7 +6,8 @@ function config($stateProvider) {
         		.state('home', {
             		url: '/',
             		templateUrl: 'core/templates/index.html',
-            		controller:'CoreController as core'
+            		controller:'CoreController',
+                                    controllerAs: 'core',
     		})
         		.state('404', {
             		url: '/404',

@@ -19,7 +19,7 @@ exports.getAll = function getAll(request, reply) {
 };
 
 exports.getOne = function (request, reply) {
-    User.findOne({ 'userId': request.params.userId }, function (err, user) {
+    User.findOne({ _id: request.params.userId }, function (err, user) {
       if (!err) {
         return reply(user);
       }
@@ -29,11 +29,12 @@ exports.getOne = function (request, reply) {
 
 exports.create =  function (request, reply) {
   var user = new User(request.payload);
+  user.scope = ['user'];
   user.save(function (err, user) {
     if (!err) {
       var userData = {
         username:user.username,
-        scope: [user.scope],
+        scope: user.scope,
         iss: Config.app.name,
         jti: user._id,
       };
@@ -51,20 +52,20 @@ exports.create =  function (request, reply) {
 
 exports.auth =  function (request, reply) {
   var payload = request.payload;
-  console.log(payload);
   User.isUser(payload, function(err, user) {
     if (!err){
       if(user){
         if(user.authenticate(payload.password)){
             var userData = {
               username:user.username,
-              scope: [user.scope],
+              scope: user.scope,
               iss: Config.app.name,
               jti: user._id,
             };
             var res = {
               token :Jwt.sign(userData, Config.key.apiSecret, { expiresInMinutes: Config.key.expiresInMinutes})
             };
+            console.log('RES',res);
             return reply(res);
         } 
         return reply(Boom.forbidden('invalid password'));   
@@ -112,7 +113,7 @@ exports.remove = function (request, reply) {
 };
 
 exports.removeAll = function (request, reply) {
-    mongoose.connection.db.dropCollection('users', function (err, result) {
+    Mongoose.connection.db.dropCollection('users', function (err, result) {
       if (!err) {
         return reply({ message: "User database successfully deleted"});
       }

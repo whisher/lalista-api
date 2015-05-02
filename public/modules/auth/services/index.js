@@ -1,65 +1,56 @@
 (function() {
   'use strict';
 
-// If false signin / register in view otherwise in modal
-var HAS_MODAL_LOGIN = false;
+var AUTH_EVENTS = {
+  authenticated: 'authenticated',
+  unauthorized: 'unauthorized',
+  forbidden: 'forbidden'
+};
 
-function Auth($http) {
-  return {
-    isLoggedIn: function() {
-        return $http.get('/auth/isloggedin');
-    },
-    signin: function(data) {
-        return $http.post('/auth/signin', data);
-    },
-    register: function(data) {
-        return $http.post('/api/user', data);
-    },
-    logout: function() {
-        return $http.get('/api/logout');
-    },
-    forgot: function(data) {
-        return $http.post('/auth/forgot', data);
-    }
-  };
-}
-
-function UserTokenStorage($localStorage) {
+function UserToken($localStorage, jwtHelper) {
   return {
     set: function(token) {
-        $localStorage.token = token;
+      $localStorage.token = token;
     },
     get: function() {
-        return $localStorage.token; 
+      var token = $localStorage.token; 
+      if(!token){
+        return undefined;
+      }
+      return token;
+    },
+    getDecodeToken: function() {
+      var token = $localStorage.token; 
+      if(!token){
+        return undefined;
+      }
+      return jwtHelper.decodeToken(token);
     },
     del: function() {
-        $localStorage.$reset();
+      $localStorage.$reset();
+    },
+    isExpired:function(){
+      var token =$localStorage.token; 
+      if(!token){
+        return true;
+      }
+      return  jwtHelper.isTokenExpired(token);
+    },
+    hasScope:function(scope){
+      var token =$localStorage.token; 
+      if(!token){
+        return false;
+      }
+      console.log(jwtHelper.decodeToken(token).scope,jwtHelper.decodeToken(token).scope.indexOf(scope));
+      return jwtHelper.decodeToken(token).scope.indexOf(scope) !== -1;
     }
   };
 }
-
-function signinModal($rootScope, $modal, $templateCache) {
-    function successCallback (data) {
-        $rootScope.$emit('auth-is-authenticated', data.token);
-    }
-    function errorCallback (data) {}
-    return {
-        open : function(){
-            var modalInstance =  $modal.open({
-                template: $templateCache.get('auth/templates/modal.html'),
-                controller: 'SigninModalController',
-                controllerAs: 'auth',
-                size:'lg'
-            });
-            return modalInstance.result.then(successCallback).catch(errorCallback);
-        }
-    };
-}
  
-function HttpInterceptor($rootScope, $q, UserTokenStorage) {
+function HttpInterceptor($rootScope, $q, UserToken, AUTH_EVENTS) {
     return {
         'request': function(config) {
-            var token = UserTokenStorage.get();
+            var token = UserToken.get();
             config.requestTimestamp = new Date().getTime();
             config.headers = config.headers || {};
             if (token) {
@@ -73,13 +64,10 @@ function HttpInterceptor($rootScope, $q, UserTokenStorage) {
         },
         'responseError': function(rejection) {
             if (rejection.status === 401) {
-                $rootScope.$emit('auth-unauthorized', rejection);
+                $rootScope.$emit(AUTH_EVENTS.unauthorized, rejection);
             }
             if (rejection.status === 403) {
-                $rootScope.$emit('auth-forbidden', rejection);
-            }//heroku 
-            if (rejection.status === 503) {
-                $rootScope.$emit('auth-forbidden', rejection);
+                $rootScope.$emit(AUTH_EVENTS.forbidden, rejection);
             }
             return $q.reject(rejection);
         }
@@ -87,9 +75,7 @@ function HttpInterceptor($rootScope, $q, UserTokenStorage) {
 }
 
 angular.module('auth.services', [])
-    .constant('HAS_MODAL_LOGIN', HAS_MODAL_LOGIN)
-    .factory('Auth', Auth)
-    .factory('UserTokenStorage', UserTokenStorage)
-    .factory('HttpInterceptor', HttpInterceptor)
-    .factory('signinModal', signinModal);
+    .constant('AUTH_EVENTS', AUTH_EVENTS)
+    .factory('UserToken', UserToken)
+    .factory('HttpInterceptor', HttpInterceptor);
 })();

@@ -17,11 +17,16 @@ function Items($http) {
     },
     destroy: function(id) {
       return $http.delete('/api/item/' + id);
+    },
+    tags: function() {
+      return $http.get('/api/tags');
+    },
+    tag: function(tag) {
+      return $http.get('/api/tags/'+tag);
     }
   };
 }
 
 angular.module('items.services', [])
     .factory('Items', Items);
-
 })();

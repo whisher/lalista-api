@@ -1,29 +1,86 @@
 .form-article{
 	background-color:$lightPrimaryColor;
 }
-.article-list{
+.item-list{
 	@extend .list-unstyled;
 	margin:0;
 	padding:0;
 }
-.article{
+.item{
 	@extend .clearfix; 
-	margin:0;
+	margin:0 0 10px 0;
 	padding:0;
 }
-.article-thumb{
-	float:left;
-	width:150px;
+.item-thumb{
+    margin: 0 10px 10px 0;
+    border: 1px solid #666;
+    padding: 2px;
 }
-.article-body{
-	margin-left:165px;
-	h3{
-		@extend .text-left;
-	}
+.item-price{
+      float:right;
+      text-align: right;
+      width: auto;
 }
-.article-content{
-	@extend .text-left;
+.item-body{
+  h2{
+    margin:0;
+    padding:0;
+    .item-title{}
+  }
+  .item-content{
+    
+  }
+  .item-scope-admin{
+    @extend .text-right;
+  }
+  .item-scope-user{
+   @extend .clearfix;
+    .item-counter{
+      float:right;
+      width: 130px;
+    }
+    .item-buy{background-color: green;
+      float:right;
+      width: auto;
+      margin-left:10px;
+      i{
+        font-size: 200%;
+      }
+    }
+  }
 }
-.article-bottom{
-	@extend .text-right;
+
+.item-uploaded{
+  width:50px; 
+  height:auto;
+}
+.item-bottom{
+	
+}
+.btn-upload {
+  position: relative;
+  overflow: hidden;
+}
+.btn-upload input {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  transform: translate(-300px, 0) scale(4);
+  -webkit-transform: translate(-300px, 0) scale(4);
+  -ms-transform: translate(-300px, 0) scale(4);
+  -o-transform: translate(-300px, 0) scale(4);
+  font-size: 23px;
+  direction: ltr;
+  cursor: pointer;
+}
+* html .btn-upload {
+  line-height: 24px;
+  margin: 1px -3px 0 0;
+}
+* + html .btn-upload {
+  padding: 2px 15px;
+  margin: 1px 0 0 0;
 }

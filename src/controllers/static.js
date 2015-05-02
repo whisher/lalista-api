@@ -2,9 +2,15 @@
 
 var Config    = require('../config/config');
 
-exports.handler = {
+exports.dist = {
 	directory: {
       		path:Config.staticPath,
       		index: true
 	}
+ };
+
+ exports.thumbs = {
+	file: function (request) {
+            	return Config.uploadsPath + '/' +request.params.thumb;
+        	}
  };

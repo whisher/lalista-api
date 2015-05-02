@@ -1,15 +1,6 @@
 (function() {
 'use strict';
 
-function showVersion(VERSION) {
-  return {
-    restrict: 'A',
-    link: function(scope, element) {
-      element.text('Version: ' + VERSION);
-    }
-  };
-}
-
 function userFeedback() {
   return {
     require: 'ngModel',
@@ -50,7 +41,6 @@ function showErrors($templateCache) {
 }
 
 angular.module('core.directives', [])
-    .directive('showVersion', showVersion)
     .directive('userFeedback', userFeedback)
     .directive('showErrors', showErrors);
     

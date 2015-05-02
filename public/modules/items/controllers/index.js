@@ -1,25 +1,45 @@
 (function() {
 'use strict';
 
-function ItemsController($rootScope, $templateCache, $modal, itemsData, Items) {
+function ItemsController(UserToken, tags) {
+  var items = this;
+  items.tags = tags.data;
+  items.hasScopeAdmin = UserToken.hasScope('admin');
+}
+function ItemsListController($rootScope, $stateParams, itemsData, UserToken, OrdersStorage) {
   var items = this;
   items.data = itemsData.data;
-  $rootScope.$on('item-has-been-deleted', function(event, id) { 
-    var data = [];
-        angular.forEach(articles.data, function(value, key) {
-          if( value._id !== id){
-            this.push(value);
-          }
-        }, data);
-        items.data = data;
-  });
+  items.tag = $stateParams.tag;
+  items.hasScopeAdmin = UserToken.hasScope('admin');
+  items.hasScopeUser = UserToken.hasScope('user');
+  if(items.hasScopeAdmin){
+    $rootScope.$on('item-has-been-deleted', function(event, id) { 
+      var data = [];
+          angular.forEach(items.data, function(value, key) {
+            if( value._id !== id){
+              this.push(value);
+            }
+          }, data);
+          items.data = data;
+    });
+  }
+  items.counter = 1;
+  items.cart = function(item){
+    var data = angular.extend(item,{quantity:items.counter});
+    $rootScope.$emit('cart-add', data);
+    OrdersStorage.add(data);
+  };
 }
-
-function ItemCreateController($state, Items) {
+function ItemCreateController($filter,$stateParams,$state, Items) {
   var item = this;
   item.title = 'Add';
   item.data = {};
+  
+  item.data.status = 'available';
+  item.data.tags = $stateParams.tag;
   item.save = function() {
+    item.data.tags = $filter('strcstoarray')(item.data.tags);
+    console.log( item.data.tags);
     Items.create(item.data).then(function(response) {
       $state.go('items');
     })
@@ -28,6 +48,9 @@ function ItemCreateController($state, Items) {
     });
   };
 
+  item.onSuccess = function (response) {
+       item.data.thumb = response.data.thumb;
+  };
 }
 
 function ItemUpdateController($stateParams, $state, itemData, Items) {
@@ -62,6 +85,7 @@ function ItemDestroyController($modalInstance, itemData, Items) {
 
 angular.module('items.controllers' ,[])
     .controller('ItemsController', ItemsController)
+    .controller('ItemsListController', ItemsListController)
     .controller('ItemCreateController', ItemCreateController)
     .controller('ItemUpdateController', ItemUpdateController)
      .controller('ItemShowController', ItemShowController)

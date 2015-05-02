@@ -1,12 +1,14 @@
 <div class="container">
-  <div class="welcome">
-    <h1 class="foo"><span class="fa fa-home"></span><span  data-ng-bind="core.welcome"></span></h1>
-    <h2  data-ng-bind="core.prologue"> </h2>
-    <h3 show-version></h3>
-    <p>
-        <a href="" class="btn btn-lg btn-success" data-ng-click="global.signin()"><i class="fa fa-sign-in"></i> Sign In</a>
-        <a href="" class="btn btn-lg btn-primary" data-ng-click="global.register()"><i class="fa fa-user"></i> Register</a>
-      </p>
-  </div>
+	<div class="welcome">
+		<h1><span class="fa fa-home"></span>lalista</h1>
+	    	<h2>Welcome</h2>
+		<p data-ng-if="!global.token">
+		        <a href="" class="btn btn-lg btn-success" data-ui-sref="session.signin"><i class="fa fa-sign-in"></i> Sign In</a>
+		        <a href="" class="btn btn-lg btn-primary" data-ui-sref="session.register"><i class="fa fa-user"></i> Register</a>
+		</p>
+		<p data-ng-if="global.token">
+		        <a href="" class="btn btn-lg btn-success" data-ui-sref="items"><i class="fa  fa-cutlery"></i>Menu</a>
+		</p>
+	</div>
 </div>
   

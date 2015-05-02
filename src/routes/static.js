@@ -9,7 +9,14 @@ module.exports = function() {
       method: 'GET',
       path: '/{somethingss*}',
       config : {
-        handler: Static.handler
+        handler: Static.dist
+      }
+    },
+    {
+      method: 'GET',
+      path: '/uploads/{thumb}',
+      config : {
+        handler: Static.thumbs
       }
     }
   ];

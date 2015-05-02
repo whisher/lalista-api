@@ -8,6 +8,7 @@ function run($rootScope) {
 angular.module('core', [
       	'ui.router',
       	'templates',
+      	'core.filters',
 	'core.services',
       	'core.directives',
       	'core.controllers',

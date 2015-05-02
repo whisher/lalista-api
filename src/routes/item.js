@@ -53,6 +53,33 @@ module.exports = function() {
                 scope: ['admin']
         }
       }
+    },
+    {
+      method: 'GET',
+      path: '/api/tags',
+      config : {
+        handler: Item.tags
+      }
+    },
+    {
+      method: 'GET',
+      path: '/api/tags/{tag}',
+      config : {
+        handler: Item.fetchByTag
+      }
+    },
+    {
+      method: 'POST',
+      path: '/api/upload',
+      config : {
+        payload: {
+            maxBytes: 2097152,
+            output: 'stream',
+            parse: true,
+            allow: 'multipart/form-data'
+        },
+        handler: Item.upload
+      }
     }
   ];
 }();

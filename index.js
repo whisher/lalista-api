@@ -32,27 +32,22 @@ server.connection(
 );
 
 var validate = function (decodedToken, callback) {
-console.log(decodedToken);
-    var error,
-        credentials =  {};
-
-    if (!credentials) {
+  var error,
+    credentials = decodedToken || {};
+    if (!Object.keys(credentials).length) {
         return callback(error, false, credentials);
     }
-
-    return callback(error, true, credentials)
+    return callback(error, true, credentials);
 };
 server.register(Jwt, function (error) {
-
-    server.auth.strategy('token', 'jwt', {
+  server.auth.strategy('token', 'jwt', {
         key: app.config.key.apiSecret,
         validateFunc: validate
-    });
-
-    // Add all the routes within the routes folder
-for (var route in Routes) {
-  server.route(Routes[route]);
-}
+  });
+  // Add all the routes within the routes folder
+  for (var route in Routes) {
+    server.route(Routes[route]);
+  }
 });
 
 
@@ -63,7 +58,13 @@ var options = {
         events: { log: '*', response: '*' ,error: '*' ,request: '*' }
     }]
 };
-
+server.ext('onPreResponse', function (request, reply) {
+    var req = request.response;
+    if (req.isBoom && (req.output.statusCode===404)) {
+      return reply.redirect('/#!/404');
+    }
+    return reply.continue();
+});
 server.register({
     register: require('good'),
     options: options
@@ -81,15 +82,3 @@ server.register({
 });
 
 
-/*
-validate: {
-    payload: {
-      userId   : Joi.string().required(),
-      username  : Joi.string().required()
-    }
-  },validate: {
-    payload: {
-      username  : Joi.string().required()
-    }
-  },
-*/

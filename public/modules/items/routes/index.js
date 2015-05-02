@@ -9,19 +9,30 @@ function config($stateProvider) {
             controller:'ItemsController',
             controllerAs: 'items',
             resolve:{
-            	itemsData : function(Items){
-            		return Items.get();
+            	tags : function(Items){
+            		return Items.tags();
             	}
             }
         })
+        .state('items by tag', {
+            url: '/items/tag/:tag',
+            templateUrl: 'items/templates/list.html',
+            controller:'ItemsListController',
+            controllerAs: 'items',
+            resolve:{
+                itemsData : function(Items,$stateParams){
+                    return Items.tag($stateParams.tag);
+                }
+            }
+        })
         .state('item create', {
-            url: '/item/create',
+            url: '/item/create/:tag',
             templateUrl: 'items/templates/form.html',
             controller:'ItemCreateController',
             controllerAs: 'item'
         })
-        .state('article update', {
-            url: '/article/update/:id',
+        .state('item update', {
+            url: '/item/update/:id',
             templateUrl: 'items/templates/form.html',
             controller:'ItemUpdateController',
             controllerAs: 'item',

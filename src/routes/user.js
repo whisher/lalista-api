@@ -10,7 +10,8 @@ module.exports = function() {
       method: 'POST',
       path: '/api/auth',
       config : {
-        handler: User.auth
+        handler: User.auth,
+        validate: Validator.auth
       }
     },
     {
@@ -51,7 +52,6 @@ module.exports = function() {
       path: '/api/user/{userId}',
       config : {
         handler: User.update
-        
       }
     },
     {

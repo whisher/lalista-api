@@ -7,9 +7,9 @@ function config($stateProvider,$httpProvider) {
             abstract: true,
         	template: '<ui-view/>',
         	resolve:{
-            	auth : function(Auth){
+            	/*auth : function(Auth){
             		return Auth.isLoggedIn();
-            	}
+            	}*/
             }
 
     });

@@ -1,5 +1,5 @@
 # Lalista-hapi
-Backend
+Backend Hapi for lalista
 
 ## Install
 * npm install
